@@ -1,12 +1,46 @@
 import { StatusBar } from 'expo-status-bar';
 import { Text, SafeAreaView, StyleSheet,TextInput,Button,Image,View} from 'react-native';
 import {useState} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
+  return(
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={MainScreen} />
+        <Stack.Screen name="ViewDetails" component={ViewDetails} />
+      </Stack.Navigator>
+    </NavigationContainer>
+
+
+  );
+};
+
+function ViewDetails(){
+  return(
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Name : ### Surname:###</Text>
+    </View>
+  );
+};
+
+
+
+
+
+
+
+
+export function MainScreen({navigation}) {
   const [Name, setName] = useState('');
   const [Surname, setSurname] = useState('');
   console.log("App starting up now.")
   return (
+  
     <View>
       <View style={styles.mainPicture}>
         <Image style={styles.ImageSize}
@@ -28,8 +62,11 @@ export default function App() {
                     placeholder="Surname :"
                     onChangeText={newText => setSurname(newText)}/>
       </View>
-        <Button title = "Add User" onPress={()=>{console.log("The users name is: " + Name + " Surname: " + Surname)}}/>
+        <Button title = "Add User" onPress={()=>{
+          navigation.navigate('ViewDetails');
+          console.log("The users name is: " + Name + " Surname: " + Surname)}}/>
     </View>
+    
        
     
   );
@@ -59,5 +96,16 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     marginTop: 30,
     justifyContent: 'space-evenly',
+  },
+
+  InputBoxs:{
+    fontSize:32,
+    backgroundColor: 'yellow',
+    paddingHorizontal: 20,
+    width: 200,
+  },
+
+  HeadingText:{
+    fontSize:32,
   }
 });
