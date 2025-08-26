@@ -20,10 +20,12 @@ export default function App() {
   );
 };
 
-function ViewDetails(){
+function ViewDetails({ navigation, route}:any) {
+  const NameGet = route.params.NameSend;
+  const SurnameGet = route.params.SurnameSend;
   return(
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Name : ### Surname:###</Text>
+      <Text style={{fontSize:34,color: 'purple'}}>Name : {NameGet}, Surname : {SurnameGet}</Text>
     </View>
   );
 };
@@ -35,7 +37,8 @@ function ViewDetails(){
 
 
 
-export function MainScreen({navigation}) {
+export function MainScreen({navigation}:any) 
+{
   const [Name, setName] = useState('');
   const [Surname, setSurname] = useState('');
   console.log("App starting up now.")
@@ -62,9 +65,12 @@ export function MainScreen({navigation}) {
                     placeholder="Surname :"
                     onChangeText={newText => setSurname(newText)}/>
       </View>
-        <Button title = "Add User" onPress={()=>{
-          navigation.navigate('ViewDetails');
-          console.log("The users name is: " + Name + " Surname: " + Surname)}}/>
+        <Button title = "Add User" 
+              onPress={()=>{
+                navigation.navigate('ViewDetails', 
+                  { NameSend : Name,
+                  SurnameSend : Surname});
+                  console.log("The users name is: " + Name + " Surname: " + Surname)}}/>
     </View>
     
        
