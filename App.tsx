@@ -1,8 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, SafeAreaView, StyleSheet,TextInput,Button,Image,View} from 'react-native';
-import {useState} from 'react';
+import { Text, SafeAreaView, StyleSheet, TextInput, Button, Image, View, ScrollView, Animated} from 'react-native';
+import {useState, useRef, useEffect} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
 
 
 const Stack = createNativeStackNavigator();
@@ -20,6 +22,30 @@ export default function App() {
   );
 };
 
+// animation component
+const FadeInView = (props:any) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    Animated.timing(
+      fadeAnim, {
+        toValue:1,
+        duration:3000,
+        useNativeDriver:false
+      }
+    ).start();
+  }, [fadeAnim]);
+
+  return(
+    <Animated.View style = {{
+      ...props.style,
+      opacity: fadeAnim,
+    }}>
+      {props.children}
+    </Animated.View>
+  );
+};
+
 function ViewDetails({ navigation, route}:any) {
   const NameGet = route.params.NameSend;
   const SurnameGet = route.params.SurnameSend;
@@ -31,12 +57,6 @@ function ViewDetails({ navigation, route}:any) {
 };
 
 
-
-
-
-
-
-
 export function MainScreen({navigation}:any) 
 {
   const [Name, setName] = useState('');
@@ -45,13 +65,15 @@ export function MainScreen({navigation}:any)
   return (
   
     <View>
+      <SafeAreaView>
+        <ScrollView>
       <View style={styles.mainPicture}>
         <Image style={styles.ImageSize}
         source={require('./assets/reactNativeImage.png')}/>
       </View>
           
         <Text style={styles.welcomeText}> Welcome your react app!</Text>
-
+        <FadeInView>
       <View style={styles.InputFlex}>
         <Text style={styles.HeadingText} >Enter Name:</Text>
         <TextInput style={styles.InputBoxs}
@@ -71,6 +93,9 @@ export function MainScreen({navigation}:any)
                   { NameSend : Name,
                   SurnameSend : Surname});
                   console.log("The users name is: " + Name + " Surname: " + Surname)}}/>
+            </FadeInView>
+          </ScrollView>        
+        </SafeAreaView>       
     </View>
     
        
