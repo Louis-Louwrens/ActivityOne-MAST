@@ -56,6 +56,14 @@ function ViewDetails({ navigation, route}:any) {
   );
 };
 
+function isEmpty (value :any) {
+  return(
+    (value == null) ||
+    (value.hasOwnProperty('length') && value.length === 0) ||
+    (value.constructor === Object && Object.keys(value).length === 0)
+  )
+};
+
 
 export function MainScreen({navigation}:any) 
 {
@@ -92,10 +100,23 @@ export function MainScreen({navigation}:any)
       </View>
         <Button title = "Add User" 
               onPress={()=>{
-                navigation.navigate('ViewDetails', 
-                  { NameSend : Name,
+                if ((isEmpty(Name)==false) && (isEmpty(Surname)==false))
+                {
+                navigation.navigate('ViewDetails', {
+                     NameSend : Name,
                   SurnameSend : Surname});
-                  console.log("The users name is: " + Name + " Surname: " + Surname)}}/>
+                  console.log("The users name is: " + Name + 
+                              " Surname: " + Surname);
+                    setError("");
+                  }
+                  else
+                  {
+                  setError("Please add the fields");
+                  }
+                }}/>
+                <Text style = {styles.red}>
+                 {Error}
+                </Text>
             </FadeInView>
           </ScrollView>        
         </SafeAreaView>       
